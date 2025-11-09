@@ -1,26 +1,42 @@
-import express from 'express'; //importamos express
-import myStatus from './src/middlewares/not-found.js';
+import express from "express"; //importamos express
+import myStatus from "./src/middlewares/not-found.js";
+import * as varCheck from "./src/middlewares/varCheck.js";
 
-const app = express(); //iniciamlizamos una const con las funciones de express
-
+const app = express(); //declaramos una variable con los metodos de express
 const PORT = 5000; //declaramos el puerto
 
-//middleware de ejemplo
-const myMetho = function(req, res, next) {
+//importamos las cositas de /middlewares/varCheck.js
+const middleCheck = varCheck.middleCheck;
+const variable = varCheck.variable;
+
+// middleware de ejemplo - global
+app.use((req, res, next) => {
     console.log(req.method)
-    next()
-}
+    next();
+})
 
-//uso del middleware
-app.use(myMetho);
+//primera ruta (endpoint)
+app.get('/', (req, res) => {
+    res.json({"message": "Hola mundo, primara api con Node y Firebase"})
+})
 
-//primera ruta (endpoint - get)
-app.get("/",(req, res)=>{
-    res.send("Hola mundo, primera api-rest en node con express")
-});
+//segunda ruta (endpoint para variable = 1)
+app.use('/acumVar', (req, res) => {
+    res.json({"message":"se añade 1 a variable"})
+    variable.val = 1
+})
 
-//uso del segundo middleware; Validacion de rutas siempre va al final
+//tercera ruta (prueba del middleware especifico)
+app.get('/middleCheck', middleCheck, (req, res) => {
+    res.json({
+        "message":"acceso permitido",
+        "valor_actual": req.variable,
+        "detalles": "El valor fue establecido en '1' al acceder a la ruta http://localhost:5000/acumVar.",
+    })
+})
+
+//uso middleware global; Validacion de rutas siempre va al final
 app.use(myStatus)
 
-//iniciamos el servidor
-app.listen(PORT, console.log(`API funcionando en http://localhost:${PORT}`))
+// inicializamos el servidor - lo prendemos xd
+app.listen(PORT, () => console.log(`Servidor corriendo en: http://localhost:${PORT}`))

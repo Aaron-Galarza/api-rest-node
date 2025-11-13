@@ -35,6 +35,106 @@ app.get('/middleCheck', middleCheck, (req, res) => {
     })
 })
 
+const products = [
+    {
+        id: 1,
+        name: "Botella Termica",
+        price: 220,
+        categories: ["hogar","accesorios"]
+    },
+    {
+        id: 2,
+        name: "Camiseta Deportiva",
+        price: 150,
+        categories: ["ropa","deportes"]
+    },
+    {
+        id: 3,
+        name: "Mochila Escolar",
+        price: 350,
+        categories: ["mochilas","escolar"]
+    },
+    {
+        id: 4,
+        name: "Auriculares Bluetooth",
+        price: 800,
+        categories: ["tecnologia","audio"]
+    },
+    {
+        id: 5,
+        name: "PC Gamer",
+        price: 1000,
+        categories: ["hogar","accesorios", "tecnologia"]
+    },
+];
+
+//GET - Mostrar Productos por Categorias (JQuery) - SI NO ENCUENTRA NADA, MUESTRA TODO
+app.get('/products', (res, req) => {
+	const {category} = req.query
+	
+	//si se ingresa una categoria para buscarla, se hace el filtrado
+	if (category) {
+		const productFiltered = products.filter(item => 
+		item.categories.includes(category)
+		);
+		
+		//si el filtrado tiene valores se muestran
+		if (productFiltered.length > 0){
+			res.json(productFiltered)
+			
+			//sino, se devuelve la lista vacia
+		} else {
+			res.status(404).json({error: "No existe categoria"})
+			
+		}
+		
+		//si NO se ingresa una categoria para buscarla, se muestra toda la coleccion
+	} else {
+		res.json(products)
+	}
+})
+
+//GET - Mostrar Productos por su Nombre
+app.get('/products/search', (req, res) => {
+    const {name} = req.query;
+
+    if (!name) {
+        res.status(400).json({error: "El nombre es requerido"})
+    } else {
+        const productFiltered = products.filter(item =>
+            item.name.toLowerCase().includes(name.toLowerCase())
+        );
+
+        if (productFiltered.length > 0) {
+            res.json(productFiltered)
+
+        } else {
+            res.status(404).json({error: "No existe producto con ese Nombre"})
+
+        }
+    }
+})
+
+//Metodo GET HTTP - Mostrar TODOS los Produtos
+//app.get('/products', (req, res) => {
+//    res.json({products})
+//})
+
+//GET - Mostrar Productos por ID (req.params)
+app.get('/products/:id', (req, res) => {
+
+    const idProduct = parseInt(req.params.id);
+    const product = products.find(item => item.id === idProduct)
+
+    if (!product) {
+        res.status(404).json({error: "No existe producto con ese ID"})
+    } else {
+        res.json({product})
+    }
+})
+ 
+
+
 //uso middleware global; Validacion de rutas siempre va al final
 app.use(myStatus)
 

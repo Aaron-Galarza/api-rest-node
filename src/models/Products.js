@@ -32,7 +32,18 @@ const products = [
     },
 ];
 
+import { db } from "./firebase.js";
+
+import {collection, doc, getDoc, getDocs} from "firebase/firestore";
+
+const productsCollection = collection(db, "products");
+
 //Los exportamos como funcion
-export const getProducts = () =>{
-    return products;
+export const getProducts = async () =>{
+    try {
+        const snapshot = await getDocs(productsCollection);
+        return snapshot.docs.map((doc) => ({id: doc.id, ...doc.data() }))
+    } catch (error) {
+        console.error(error)
+    }
 };

@@ -2,10 +2,10 @@
 import * as Model from "../models/Products.js";
 
 //declaramos la constante con el metodo del Model
-const products = Model.getProducts();
+const products = await Model.getProducts();
 
 //GET - Mostrar Productos por Categorias (JQuery) - SI NO ENCUENTRA NADA, MUESTRA TODO
-export const getAllProducts = (req, res) => {
+export const getAllProducts = async (req, res) => {
 	const {category} = req.query;
 	
 	if (!category) {
@@ -43,8 +43,8 @@ export const getProductName = (req, res) => {
 }
 
 //GET - Mostrar Productos por ID (req.params)
-export const getProductId = (req, res) => {
-	const idProduct = parseInt(req.params.id)
+export const getProductId = async (req, res) => {
+	const idProduct = req.params.id
 	const productFiltered = products.find(item => item.id === idProduct)
 
 	if (productFiltered) {

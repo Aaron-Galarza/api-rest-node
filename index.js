@@ -1,3 +1,4 @@
+import "dotenv/config"
 import express, { Router } from "express"; //importamos express
 
 //importamos middleware
@@ -8,7 +9,7 @@ import productRouter from "./src/routes/products.routes.js";
 import checkRouter from "./src/routes/check.routes.js"
 
 const app = express(); //declaramos una variable con los metodos de express
-const PORT = 5000; //declaramos el puerto
+const PORT = process.env.PORT; //declaramos el puerto
 
 //uso middleware global; verificacion de metodos siempre va al principio
 app.use((req, res, next) => {

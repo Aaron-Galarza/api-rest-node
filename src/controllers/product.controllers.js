@@ -1,11 +1,10 @@
 //Llamamos al modelo de productos para trabajarlo en controllers
 import * as Model from "../models/Products.js";
 
-//declaramos la constante con el metodo del Model
-const products = await Model.getProducts();
-
 //GET - Mostrar Productos por Categorias (JQuery) - SI NO ENCUENTRA NADA, MUESTRA TODO
 export const getAllProducts = async (req, res) => {
+	const products = await Model.getProducts();
+
 	const {category} = req.query;
 	
 	if (!category) {
@@ -22,7 +21,9 @@ export const getAllProducts = async (req, res) => {
 }
 
 //GET - Mostrar Productos por su Nombre
-export const getProductName = (req, res) => {
+export const getProductName = async (req, res) => {
+	const products = await Model.getProducts();
+
 	const {name} = req.query;
 	
 	if (!name) {
@@ -44,6 +45,8 @@ export const getProductName = (req, res) => {
 
 //GET - Mostrar Productos por ID (req.params)
 export const getProductId = async (req, res) => {
+	const products = await Model.getProducts();
+	
 	const idProduct = req.params.id
 	const productFiltered = products.find(item => item.id === idProduct)
 
@@ -54,4 +57,11 @@ export const getProductId = async (req, res) => {
 		res.status(400).json({error: "ID no existe"})
 		
 	}
+}
+
+export const createProduct = async (req, res) => {
+	const {name, price, categories} = req.body
+
+	const product = await Model.postProducts({name, price, categories})
+	res.json(product)
 }

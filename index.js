@@ -17,6 +17,8 @@ app.use((req, res, next) => {
     next();
 })
 
+app.use(express.json())
+
 //Mounting Routes - Modularizamos las rutas y las llamamos para usarlas
 app.use('/api', productRouter)
 app.use('/api', checkRouter)

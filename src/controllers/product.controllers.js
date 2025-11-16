@@ -65,3 +65,15 @@ export const createProduct = async (req, res) => {
 	const product = await Model.postProducts({name, price, categories})
 	res.json(product)
 }
+
+export const deleteProduct = async (req, res) => {
+	const { id } = req.params
+
+	const deleted = await Model.deleteProduct(id)
+
+	if (!deleted) {
+		return res.status(404).json({"message":"Producto no encontrado"})
+	}
+
+	res.status(201).json({"message":"Producto borrado correctamnte"})
+}

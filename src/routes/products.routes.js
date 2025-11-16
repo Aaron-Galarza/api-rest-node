@@ -3,7 +3,8 @@ import {
     getAllProducts,
     getProductName,
     getProductId,
-    createProduct
+    createProduct,
+    deleteProduct
 } from "../controllers/product.controllers.js"; //Llamamos a sus respectivos controllers
 
 const router = Router();
@@ -18,5 +19,9 @@ router.get('/products/:id', getProductId)
 //POST
 // -Crear un nuevo Producto
 router.post('/products', createProduct)
+
+//DELETE
+// -Eliminar un Producto por su ID
+router.delete('/products/:id', deleteProduct)
 
 export default router;

@@ -4,7 +4,9 @@ import {
     getProductName,
     getProductId,
     createProduct,
-    deleteProduct
+    deleteProduct,
+    putUpdateProduct,
+    patchUpdateProduct
 } from "../controllers/product.controllers.js"; //Llamamos a sus respectivos controllers
 
 const router = Router();
@@ -24,4 +26,11 @@ router.post('/products', createProduct)
 // -Eliminar un Producto por su ID
 router.delete('/products/:id', deleteProduct)
 
+//PUT
+// -Actualizar un Producto usando PUT (remplaza todo el documento)
+router.put('/products/:id', putUpdateProduct)
+
+//PATCH
+// -Actualizar un Producto usando PATCH (modifica el atributo especifico)
+router.patch('/products/:id', patchUpdateProduct)
 export default router;

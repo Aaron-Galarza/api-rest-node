@@ -77,3 +77,42 @@ export const deleteProduct = async (req, res) => {
 
 	res.status(201).json({"message":"Producto borrado correctamnte"})
 }
+
+//REMPLAZA TODOS LOS DATOS - No se puede actualizar un atributo individualmente
+export const putUpdateProduct = async (req, res) => {
+	const { id } = req.params
+	const {name, price, categories} = req.body
+
+	if (!name || !price || !categories) {
+		return res.status(422).json({error: "Nombre, precio y categoria son obligatorios para su modificacion"})
+
+	}
+
+	const update = await Model.putProduct(id, {name, price, categories})
+
+	res.status(201).json({"message":"Producto actualizado correctamente",
+		update
+	})
+}
+
+export const patchUpdateProduct = async (req, res) => {
+	const { id } = req.params
+	const data = {}
+
+	if (req.body.name !== undefined) data.name = req.body.name;
+	if (req.body.price !== undefined) data.price = req.body.price;
+	if (req.body.categories !== undefined) data.categories = req.body.categories;
+	
+	if (Object.keys(data).length === 0) {
+		return res.status(422)
+		.json({error: "Nombre, precio y categoria son obligatorios para su modificacion"})
+
+	}
+
+	const update = await Model.patchProduct(id, data)
+
+	res.status(201).json({"message":"Producto modificado correctamente",
+		update
+	})
+
+}

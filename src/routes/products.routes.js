@@ -8,6 +8,7 @@ import {
     putUpdateProduct,
     patchUpdateProduct
 } from "../controllers/product.controllers.js"; //Llamamos a sus respectivos controllers
+import {verifyToken} from "../middlewares/verify-token.js"
 
 const router = Router();
 //GET
@@ -20,7 +21,7 @@ router.get('/products/:id', getProductId)
 
 //POST
 // -Crear un nuevo Producto
-router.post('/products', createProduct)
+router.post('/products', verifyToken, createProduct)
 
 //DELETE
 // -Eliminar un Producto por su ID

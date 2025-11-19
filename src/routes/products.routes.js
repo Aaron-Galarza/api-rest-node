@@ -33,4 +33,5 @@ router.put('/products/:id', putUpdateProduct)
 //PATCH
 // -Actualizar un Producto usando PATCH (modifica el atributo especifico)
 router.patch('/products/:id', patchUpdateProduct)
+
 export default router;

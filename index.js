@@ -6,6 +6,7 @@ import myStatus from "./src/middlewares/not-found.js";
 
 //importamos rutas
 import productRouter from "./src/routes/products.routes.js";
+import userRouter from "./src/routes/auth.routes.js"
 import checkRouter from "./src/routes/check.routes.js"
 
 const app = express(); //declaramos una variable con los metodos de express
@@ -22,6 +23,7 @@ app.use(express.json())
 //Mounting Routes - Modularizamos las rutas y las llamamos para usarlas
 app.use('/api', productRouter)
 app.use('/api', checkRouter)
+app.use('/api', userRouter)
 
 //primera ruta - "Hola Mundo" (endpoint)
 app.get('/', (req, res) => {
